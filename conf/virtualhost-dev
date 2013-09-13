@@ -1,6 +1,6 @@
 <VirtualHost *:80>
     DocumentRoot PATH
-    ServerName leadrush-debug
+    ServerName leadrush-dev
 
 
     <Directory PATH>
