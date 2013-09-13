@@ -37,7 +37,7 @@ init ()
 {	
 	
 	chmod +x $CASPERJS;
-	chmod +x $CASPERJS;
+	chmod +x ci/vendor/imageshack-upload;
 	
 	db
 
