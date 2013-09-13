@@ -40,9 +40,6 @@ init ()
 	
 	db
 
-        echo "Use Debug Configuration for our Application"
-        cp -Rf tests/config/* application/config/
-
     	echo "Debug started"
 	cd $ROOT
 
