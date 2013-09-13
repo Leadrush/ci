@@ -55,7 +55,7 @@ run ()
             cd $ROOT
 
 
-        $CASPERJS test ./tests/scenario.coffee  $CASPER_OPTIONS
+        $CASPERJS test ./tests/scenario/ $CASPER_OPTIONS
 }
 
 ROOT=$(pwd)/
