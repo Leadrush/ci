@@ -39,10 +39,7 @@ echo ""
 
 echo "Test suite end : $temp"
 
-if [ $temp != 0  -a "$1" != 'local' ]
-then
-
-    if [ -d screenshot ]
+if [ -d screenshot ]
     then
         IMAGESHACK_DEVELOPER_KEY=HWOZIUMF2ec52f515ea63b0b4a783cc88fde5593
         export IMAGESHACK_DEVELOPER_KEY
@@ -52,7 +49,6 @@ then
             echo "Send $file to imageshack"
             ci/vendor/imageshack-upload -i "$file"
         done
-    fi
 fi
 
 
