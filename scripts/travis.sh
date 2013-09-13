@@ -33,6 +33,12 @@ if [ $temp != 0  -a "$1" != 'local' ]
 fi
 
 echo "#############################"
+echo "Cookie settings"
+cat ./application/config/config.php | grep cookie
+echo ""
+
+
+echo "#############################"
 echo "Apache Access Log"
 sudo cat /var/log/apache2/access.log
 echo ""
