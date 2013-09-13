@@ -32,6 +32,13 @@ if [ $temp != 0  -a "$1" != 'local' ]
     temp=$?
 fi
 
+echo "Apache Access Log"
+sudo cat /var/log/apache2/access.log
+
+
+echo "Apache Error Log"
+sudo cat /var/log/apache2/error.log
+
 echo "Test suite end : $temp"
 
 if [ $temp != 0  -a "$1" != 'local' ]
