@@ -59,7 +59,7 @@ run ()
             CASPER_OPTIONS="$CASPER_OPTIONS --nos_step=$1"
         fi
 
-        $CASPERJS test ./ci/tests/casperjs/scenario.js  $CASPER_OPTIONS
+        $CASPERJS test ./tests/scenario.coffee  $CASPER_OPTIONS
 }
 
 ROOT=$(pwd)/
