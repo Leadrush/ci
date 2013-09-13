@@ -3,7 +3,7 @@ var BASE_URL = casper.cli.get('base_url'),
     test_name = casper.cli.has(0) ? casper.cli.get(0) : 'test',
     utils = require('utils');
 
-
+(function(casper) {
     var logLevel = casper.cli.get('log-level');
     if (casper.cli.get('color-dummy')) {
         casper.options.colorizerType = 'Dummy';
@@ -26,6 +26,7 @@ var BASE_URL = casper.cli.get('base_url'),
         });
     });
     
-
+    casper.start();
     casper.viewport(1024, 768);
-
+    
+})(casper);
