@@ -25,5 +25,8 @@ var BASE_URL = casper.cli.get('base_url'),
             height: 768
         });
     });
-
+    
+    casper.start();
+    casper.viewport(1024, 768);
+    
 })(casper);
