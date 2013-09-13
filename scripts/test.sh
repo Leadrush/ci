@@ -13,7 +13,7 @@ CASPERJS=ci/vendor/casperjs/bin/casperjs
 
 DATE=$(date +"%F-%H-%M-%S")
 SCREENSHOTDATE="${SCREENSHOT}${DATE}-"
-CASPER_OPTIONS="--fail-fast --direct --log-level=warning --capture_path=$SCREENSHOTDATE --pre=./ci/tests/casperjs/pre.js --base_url=$URL"
+CASPER_OPTIONS="--fail-fast --direct --log-level=warning --capture_path=$SCREENSHOTDATE --includes=./ci/tests/casperjs/pre.js --base_url=$URL"
 
 help ()
 {
