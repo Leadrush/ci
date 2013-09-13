@@ -1,7 +1,5 @@
 #! /bin/sh
 
-cd ../../
-
 run ()
 {
     if [ "$1" = 'local' ]
