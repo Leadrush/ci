@@ -35,6 +35,14 @@ var BASE_URL = casper.cli.get('base_url'),
         });
     });
     
+    casper.on('http.status.500', function(resource) {
+        this.capture(capture_path + test_name + '-500.png', {
+            top: 0,
+            left: 0,
+            width: 1024,
+            height: 768
+        });
+    });    
     
     
     casper.start();
