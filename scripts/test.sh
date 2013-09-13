@@ -34,8 +34,6 @@ db ()
 
 init ()
 {	
-        sudo cat /etc/apache2/sites-available/default
-
 	chmod +x $CASPERJS;
 	chmod +x ci/vendor/imageshack-upload;
 	
