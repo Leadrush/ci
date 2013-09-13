@@ -28,7 +28,8 @@ db ()
     	echo "Create Database"
 	$(mysql -h $DB_HOST -u $DB_USER --password=$DB_PASSWORD -e "DROP DATABASE IF EXISTS $DB_NAME;CREATE DATABASE $DB_NAME DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;")
 	
-	echo "Dump sql from app"
+	echo "Dump sql from app tests/db.sql"
+        $(mysql -h $DB_HOST -u $DB_USER --password=$DB_PASSWORD $DB_NAME < tests/db.sql)
 	
 }
 
@@ -39,7 +40,8 @@ init ()
 	
 	db
 
-        echo "Build APP Configuration"
+        echo "Use Debug Configuration for our Application"
+        cp -Rf tests/config/* application/config/
 
     	echo "Debug started"
 	cd $ROOT
