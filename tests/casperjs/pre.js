@@ -26,6 +26,17 @@ var BASE_URL = casper.cli.get('base_url'),
         });
     });
     
+    casper.on('timeout', function(msg, backtrace) {
+        this.capture(capture_path + test_name + '-timeout.png', {
+            top: 0,
+            left: 0,
+            width: 1024,
+            height: 768
+        });
+    });
+    
+    
+    
     casper.start();
     casper.viewport(1024, 768);
     
