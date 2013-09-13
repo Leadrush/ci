@@ -15,9 +15,7 @@ var BASE_URL = casper.cli.get('base_url'),
     casper.options.waitTimeout = 10000;
 
     test_name = test_name.split('/');
-    test_name = test_name[test_name.length - 1].replace('.js', '');
-
-
+    test_name = test_name[test_name.length - 1].replace('.js', '').replace('.coffee', '');
 
     casper.on('error', function(msg, backtrace) {
         this.capture(capture_path + test_name + '-error.png', {

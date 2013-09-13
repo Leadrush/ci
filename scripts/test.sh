@@ -17,11 +17,10 @@ CASPER_OPTIONS="--fail-fast --direct --log-level=warning --capture_path=$SCREENS
 
 help ()
 {
-    echo "Test suite for Leadrush LTD"
-    echo ""
-    echo "    test init             - initialise Novius OS test instance";
-    echo "    test install [wizard] - runs begin of tests suite, install and appmanager";
-    echo "    test run [stepname]   - runs complete tests suite";
+        echo "Test suite for Leadrush LTD"
+        echo ""
+        echo "    test init             - initialise Novius OS test instance";
+        echo "    test run [stepname]   - runs complete tests suite";
 }
 
 db ()
@@ -41,39 +40,26 @@ init ()
 	
 	db
 
+        echo "Build APP Configuration"
+
     	echo "Debug started"
 	cd $ROOT
 
 }
 
-install ()
-{
-    set -e
-
-    echo "Test install begin"
-	cd $ROOT
-
-	$CASPERJS test ./ci/tests/casperjs/install.js --xunit=$REPORT/casper-install.xml $CASPER_OPTIONS --host="$DB_HOST" --user="$DB_USER" --password="$DB_PASSWORD" --db=$DB_NAME
-
-    if [ "$1" = "wizard" ]; then return; fi
-
-    $CASPERJS test ./ci/tests/casperjs/appmanager.js --xunit=$REPORT/casper-appmanager.xml $CASPER_OPTIONS
-}
 
 run ()
 {
-    set -e
-    echo "Test begin"
-	cd $ROOT
+        set -e
+        echo "Test begin"
+            cd $ROOT
 
-	install
+        if [ -n $1 ]
+        then
+            CASPER_OPTIONS="$CASPER_OPTIONS --nos_step=$1"
+        fi
 
-    if [ -n $1 ]
-    then
-        CASPER_OPTIONS="$CASPER_OPTIONS --nos_step=$1"
-    fi
-
-    $CASPERJS test ./ci/tests/casperjs/scenario.js  $CASPER_OPTIONS
+        $CASPERJS test ./ci/tests/casperjs/scenario.js  $CASPER_OPTIONS
 }
 
 ROOT=$(pwd)/
@@ -83,11 +69,6 @@ then
     case "$1" in
 		"init")
 			init
-			exit $?
-		;;
-		"install")
-			init
-			install  $2
 			exit $?
 		;;
 		"run")
