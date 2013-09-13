@@ -26,34 +26,24 @@ help ()
 
 db ()
 {
-    echo "Init DB"
+    	echo "Create Database"
 	$(mysql -h $DB_HOST -u $DB_USER --password=$DB_PASSWORD -e "DROP DATABASE IF EXISTS $DB_NAME;CREATE DATABASE $DB_NAME DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;")
+	
+	echo "Dump sql from app"
+	
 }
 
 init ()
-{
+{	
+	
+	chmod +x $CASPERJS;
+	chmod +x $CASPERJS;
+	
 	db
 
-    echo "Instance Novius OS test reset"
+    	echo "Debug started"
 	cd $ROOT
 
-	sudo rm -rf $REPORT
-	sudo rm -rf $SCREENSHOT
-	sudo rm -rf local/config/development
-	sudo rm -f local/config/db.config.php
-	sudo rm -f local/config/crypt.config.php
-	sudo rm -f local/config/contexts.config.php
-	sudo rm -f local/config/contexts.config.php
-	sudo rm -rf local/metadata/*
-	sudo rm -rf local/cache/fuelphp/*
-	sudo rm -rf local/data/media/*
-	sudo rm -rf local/cache/media/*
-	sudo rm -rf local/cache/fuelphp/*
-	sudo rm -rf local/data/config/*
-	sudo rm -rf public/cache/media/*
-	sudo rm -rf public/media/*
-
-	echo "Instance Novius OS test reseted"
 }
 
 install ()
@@ -78,14 +68,12 @@ run ()
 
 	install
 
-    wget http://www.novius-os.org/static/apps/noviusos_templates_basic/img/logo.png -O /tmp/logo-novius-os.png
-
     if [ -n $1 ]
     then
         CASPER_OPTIONS="$CASPER_OPTIONS --nos_step=$1"
     fi
 
-    $CASPERJS test ./ci/tests/casperjs/scenario.js --xunit=$REPORT/casper-scenario.xml $CASPER_OPTIONS
+    $CASPERJS test ./ci/tests/casperjs/scenario.js  $CASPER_OPTIONS
 }
 
 ROOT=$(pwd)/
