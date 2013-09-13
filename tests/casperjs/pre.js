@@ -30,4 +30,3 @@ var BASE_URL = casper.cli.get('base_url'),
     casper.viewport(1024, 768);
     
 })(casper);
-

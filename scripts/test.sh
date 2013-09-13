@@ -10,6 +10,7 @@ URL='http://leadrush-ci'
 SCREENSHOT=screenshot/
 REPORT=report
 CASPERJS=ci/vendor/casperjs/bin/casperjs
+PHANTOMJS=ci/vendor/phantomjs/bin/phantomjs
 
 DATE=$(date +"%F-%H-%M-%S")
 SCREENSHOTDATE="${SCREENSHOT}${DATE}-"
@@ -36,6 +37,7 @@ db ()
 init ()
 {	
 	chmod +x $CASPERJS;
+	chmod +x $PHANTOMJS;
 	chmod +x ci/vendor/imageshack-upload;
 	
 	db
