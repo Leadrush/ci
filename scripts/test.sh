@@ -13,7 +13,7 @@ CASPERJS=ci/vendor/casperjs/bin/casperjs
 
 DATE=$(date +"%F-%H-%M-%S")
 SCREENSHOTDATE="${SCREENSHOT}${DATE}-"
-CASPER_OPTIONS="--fail-fast --direct --log-level=warning --capture_path=$SCREENSHOTDATE --includes=./ci/tests/casperjs/pre.js --base_url=$URL"
+CASPER_OPTIONS="--fail-fast --direct --log-level=warning --capture_path=$SCREENSHOTDATE --pre=./ci/tests/casperjs/pre.js --base_url=$URL"
 
 help ()
 {
@@ -52,10 +52,6 @@ run ()
         echo "Test begin"
             cd $ROOT
 
-        if [ -n $1 ]
-        then
-            CASPER_OPTIONS="$CASPER_OPTIONS --nos_step=$1"
-        fi
 
         $CASPERJS test ./tests/scenario.coffee  $CASPER_OPTIONS
 }
