@@ -1,26 +1,46 @@
 /*jshint strict:false*/
-/*global CasperError console phantom require*/
+/*global CasperError, casper, console, phantom, require*/
+/**
+ * Google sample testing.
+ *
+ * Usage:
+ *
+ *     $ casperjs test googletesting.js
+ */
+casper.test.begin('Google search retrieves 10 or more results', 5, function suite(test) {
+    casper.start("http://www.google.fr/", function() {
+        test.assertTitle("Google", "google homepage title is the one expected");
+        test.assertExists('form[action="/search"]', "main form is found");
+        this.fill('form[action="/search"]', {
+            q: "casperjs"
+        }, true);
+    });
 
-var casper = require("casper").create({
-    logLevel: "debug"
+    casper.then(function() {
+        test.assertTitle("casperjs - Recherche Google", "google title is ok");
+        test.assertUrlMatch(/q=casperjs/, "search term has been submitted");
+        test.assertEval(function() {
+            return __utils__.findAll("h3.r").length >= 10;
+        }, "google search for \"casperjs\" retrieves 10 or more results");
+    });
+
+    casper.run(function() {
+        test.done();
+    });
 });
 
-casper.start("http://www.google.fr/", function() {
-    this.test.assertTitle("Google", "google homepage title is the one expected");
-    this.test.assertExists('form[action="/search"]', "main form is found");
-    this.fill('form[action="/search"]', {
-        q: "foo"
-    }, true);
-});
+casper.test.begin('Casperjs.org is first ranked', 1, function suite(test) {
+    casper.start("http://www.google.fr/", function() {
+        this.fill('form[action="/search"]', {
+            q: "casperjs"
+        }, true);
+    });
 
-casper.then(function() {
-    this.test.assertTitle("foo - Recherche Google", "google title is ok");
-    this.test.assertUrlMatch(/q=foo/, "search term has been submitted");
-    this.test.assertEval((function() {
-        return __utils__.findAll("h3.r").length >= 10;
-    }), "google search for \"foo\" retrieves 10 or more results");
-});
+    casper.then(function() {
+        test.assertSelectorContains(".g", "casperjs.org", "casperjs.org is first ranked");
+    });
 
-casper.run(function() {
-    this.test.renderResults(true);
+    casper.run(function() {
+        test.done();
+    });
 });

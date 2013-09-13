@@ -1,29 +1,53 @@
 /*global casper*/
 /*jshint strict:false*/
-var received;
+casper.test.begin('can confirm dialog', 2, {
+    received: undefined,
 
-casper.setFilter('page.confirm', function(message) {
-    received = message;
-    return true;
+    setUp: function(test) {
+        var self = this;
+        casper.removeAllFilters('page.confirm');
+        casper.setFilter('page.confirm', function(message) {
+            self.received = message;
+            return true;
+        });
+    },
+
+    tearDown: function(test) {
+        casper.removeAllFilters('page.confirm');
+    },
+
+    test: function(test) {
+        var self = this;
+        casper.start('tests/site/confirm.html', function() {
+            test.assert(this.getGlobal('confirmed'), 'confirmation dialog accepted');
+        }).run(function() {
+            test.assertEquals(self.received, 'are you sure?', 'confirmation message is ok');
+            test.done();
+        });
+    }
 });
 
-casper.start('tests/site/confirm.html', function() {
-    this.test.assert(this.getGlobal('confirmed'), 'confirmation dialog accepted');
-});
+casper.test.begin('can cancel dialog', {
+    received: undefined,
 
-casper.then(function() {
-    //remove the page.confirm event filter so we can add a new one
-    casper.removeAllFilters('page.confirm')
-    casper.setFilter('page.confirm', function(message) {
-        return false;
-    });
-});
+    setUp: function(test) {
+        var self = this;
+        casper.removeAllFilters('page.confirm');
+        casper.setFilter('page.confirm', function(message) {
+            return false;
+        });
+    },
 
-casper.thenOpen('/tests/site/confirm.html', function() {
-    this.test.assertNot(this.getGlobal('confirmed'), 'confirmation dialog canceled');
-});
+    tearDown: function(test) {
+        casper.removeAllFilters('page.confirm');
+    },
 
-casper.run(function() {
-    this.test.assertEquals(received, 'are you sure?', 'confirmation message is ok');
-    this.test.done(3);
+    test: function(test) {
+        var self = this;
+        casper.start('tests/site/confirm.html', function() {
+            test.assertNot(this.getGlobal('confirmed'), 'confirmation dialog canceled');
+        }).run(function() {
+            test.done();
+        });
+    }
 });

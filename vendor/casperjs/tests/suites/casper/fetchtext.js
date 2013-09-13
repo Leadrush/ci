@@ -1,11 +1,21 @@
 /*global casper*/
 /*jshint strict:false*/
-casper.test.comment('Casper.fetchText()');
-
-casper.start('tests/site/index.html', function() {
-    this.test.assertEquals(this.fetchText('ul li'), 'onetwothree', 'Casper.fetchText() can retrieve text contents');
+casper.test.begin('fetchText() basic tests', 1, function(test) {
+    casper.start('tests/site/index.html', function() {
+        test.assertEquals(this.fetchText('ul li'), 'onetwothree',
+            'Casper.fetchText() can retrieve text contents');
+    }).run(function() {
+        test.done();
+    });
 });
 
-casper.run(function() {
-    this.test.done(1);
+casper.test.begin('fetchText() handles HTML entities', 1, function(test) {
+    casper.start().then(function() {
+        this.setContent('<html><body>Voil&agrave;</body></html>');
+        test.assertEquals(this.fetchText('body'), 'Voilà',
+            'Casper.fetchText() fetches decoded text');
+    });
+    casper.run(function() {
+        test.done();
+    });
 });

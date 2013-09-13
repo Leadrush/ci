@@ -1,9 +1,6 @@
-/**
- * CasperJS local HTTP test server
- */
+/*global phantom, casper, patchRequire, require:true*/
 
-/*global phantom casper require*/
-
+var require = patchRequire(require);
 var colorizer = require('colorizer').create('Colorizer');
 var fs = require('fs');
 var utils = require('utils');
@@ -17,6 +14,7 @@ function info(message) {
 }
 
 service = server.listen(testServerPort, function(request, response) {
+    /*jshint maxstatements:20*/
     "use strict";
     var requestPath = request.url;
     if (requestPath.indexOf('?') !== -1) {
@@ -29,11 +27,20 @@ service = server.listen(testServerPort, function(request, response) {
         response.write("404 - NOT FOUND");
     } else {
         var headers = {};
+        var binMode = false;
         if (/js$/.test(pageFile)) {
             headers['Content-Type'] = "application/javascript";
         }
+        else if (/png$/.test(pageFile)) {
+            binMode = true;
+        }
         response.writeHead(200, headers);
-        response.write(fs.read(pageFile));
+        if (binMode) {
+            response.write(fs.read(pageFile, 'b'));
+        }
+        else {
+            response.write(fs.read(pageFile));
+        }
     }
     response.close();
 });

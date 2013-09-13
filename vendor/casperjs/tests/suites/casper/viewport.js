@@ -1,13 +1,41 @@
 /*global casper*/
 /*jshint strict:false*/
-casper.test.comment('Casper.viewport()');
+var utils = require('utils');
 
-casper.start();
+casper.test.begin('viewport() tests', 3, function(test) {
+    casper.start();
+    casper.viewport(1337, 999);
+    test.assertEquals(casper.page.viewportSize.width, 1337,
+        'Casper.viewport() can change the width of page viewport');
+    test.assertEquals(casper.page.viewportSize.height, 999,
+        'Casper.viewport() can change the height of page viewport');
+    test.assertRaises(casper.viewport, ['a', 'b'],
+        'Casper.viewport() validates viewport size data');
+    test.done();
+});
 
-casper.viewport(1337, 999);
+casper.test.begin('viewport() asynchronous tests', 2, function(test) {
+    var screenshotData;
 
-casper.test.assertEquals(casper.page.viewportSize.width, 1337, 'Casper.viewport() can change the width of page viewport');
-casper.test.assertEquals(casper.page.viewportSize.height, 999, 'Casper.viewport() can change the height of page viewport');
-casper.test.assertRaises(casper.viewport, ['a', 'b'], 'Casper.viewport() validates viewport size data');
+    casper.start('tests/site/index.html').viewport(800, 600, function() {
+        this.setContent(utils.format('<img src="data:image/png;base64,%s">',
+                                     this.captureBase64('png')));
+    });
 
-casper.test.done(3);
+    casper.then(function() {
+        var imgInfo = this.getElementInfo('img');
+        if (phantom.casperEngine === "slimerjs" && imgInfo.width !== 800) {
+            // sometimes, setting viewport could take more time in slimerjs/gecko
+            // and the image is not still ready: :-/
+            test.skip(2);
+        }
+        else {
+            test.assertEquals(imgInfo.width, 800, 'Casper.viewport() changes width asynchronously');
+            test.assertEquals(imgInfo.height, 600, 'Casper.viewport() changes height asynchronously');
+        }
+    });
+
+    casper.run(function() {
+        test.done();
+    });
+});

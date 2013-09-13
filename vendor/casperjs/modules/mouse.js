@@ -28,8 +28,9 @@
  *
  */
 
-/*global CasperError exports require*/
+/*global CasperError, exports, patchRequire, require:true*/
 
+var require = patchRequire(require);
 var utils = require('utils');
 
 exports.create = function create(casper) {
@@ -43,11 +44,13 @@ var Mouse = function Mouse(casper) {
         throw new CasperError('Mouse() needs a Casper instance');
     }
 
-    var slice = Array.prototype.slice;
-
-    var nativeEvents = ['mouseup', 'mousedown', 'click', 'mousemove'];
-    var emulatedEvents = ['mouseover', 'mouseout'];
-    var supportedEvents = nativeEvents.concat(emulatedEvents);
+    var slice = Array.prototype.slice,
+        nativeEvents = ['mouseup', 'mousedown', 'click', 'mousemove'];
+    if (utils.gteVersion(phantom.version, '1.8.0')) {
+        nativeEvents.push('doubleclick');
+    }
+    var emulatedEvents = ['mouseover', 'mouseout'],
+        supportedEvents = nativeEvents.concat(emulatedEvents);
 
     function computeCenter(selector) {
         var bounds = casper.getElementBounds(selector);
@@ -92,6 +95,10 @@ var Mouse = function Mouse(casper) {
 
     this.click = function click() {
         processEvent('click', arguments);
+    };
+
+    this.doubleclick = function doubleclick() {
+        processEvent('doubleclick', arguments);
     };
 
     this.down = function down() {
