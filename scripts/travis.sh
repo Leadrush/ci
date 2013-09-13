@@ -33,26 +33,9 @@ if [ $temp != 0  -a "$1" != 'local' ]
 fi
 
 echo "#############################"
-echo "Cookie settings"
-cat ./application/config/config.php | grep cookie
-echo ""
-
-
-echo "#############################"
-echo "Apache Access Log"
-sudo cat /var/log/apache2/access.log
-echo ""
-
-echo "#############################"
 echo "Apache Error Log"
 sudo cat /var/log/apache2/error.log
 echo ""
-
-echo "#############################"
-echo "Cookies CasperJS & PhantomJS"
-cat ./ci/tests/casperjs/cookie.txt
-echo ""
-
 
 echo "Test suite end : $temp"
 
@@ -71,4 +54,6 @@ then
         done
     fi
 fi
+
+
 exit $temp
